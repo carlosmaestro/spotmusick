@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "859098120590",
+    "firebase_url": "https://spotmusick-180e9.firebaseio.com",
+    "project_id": "spotmusick-180e9",
+    "storage_bucket": "spotmusick-180e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859098120590:android:93dd423d82f040cc1e24df",
+        "android_client_info": {
+          "package_name": "br.com.devteam.spotmusick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859098120590-jod8gl6dftqia9q77ir23jh9vhnqt3d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjJdgeAvLPeYg7afHSoXLqOZN10XYiFUM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859098120590-jod8gl6dftqia9q77ir23jh9vhnqt3d3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

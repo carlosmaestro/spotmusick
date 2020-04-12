@@ -1,0 +1,3 @@
+keytool -list -v -keystore "spotify.keystore" -alias spotify
+
+keytool -J-Duser.language=en -exportcert -alias androiddebugkey -keystore debug.keystore -list -v -storepass android
