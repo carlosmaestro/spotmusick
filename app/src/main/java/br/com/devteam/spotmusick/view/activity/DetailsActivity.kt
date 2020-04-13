@@ -3,6 +3,7 @@ package br.com.devteam.spotmusick.view.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import br.com.devteam.spotmusick.R
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 
 
@@ -17,6 +18,8 @@ class DetailsActivity : AppCompatActivity() {
         val spotifyEmail = intent.getStringExtra("spotify_email")
         val spotifyAvatarURL = intent.getStringExtra("spotify_avatar")
         val spotifyAccessToken = intent.getStringExtra("spotify_access_token")
+
+        Picasso.get().load(spotifyAvatarURL).into(iv_avatar);
 
         spotify_id_textview.text = spotifyId
         spotify_displayname_textview.text = spotifyDisplayName

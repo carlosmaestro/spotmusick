@@ -1,10 +1,15 @@
 package br.com.devteam.spotmusick.view.activity
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import br.com.devteam.spotmusick.R
+import br.com.devteam.spotmusick.domain.SpotifyProfile
+import br.com.devteam.spotmusick.viewmodel.UserProfileViewModel
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
@@ -25,6 +30,10 @@ class SpotifyLoginActivity : AppCompatActivity() {
     var avatar = ""
     var accessToken = ""
 
+    private val viewModel: UserProfileViewModel by lazy {
+        ViewModelProvider(this).get(UserProfileViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spotify_login)
@@ -37,6 +46,16 @@ class SpotifyLoginActivity : AppCompatActivity() {
                 request
             )
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val request = getAuthenticationRequest(AuthenticationResponse.Type.TOKEN)
+        AuthenticationClient.openLoginActivity(
+            this,
+            SpotifyConstants.AUTH_TOKEN_REQUEST_CODE,
+            request
+        )
     }
 
     private fun getAuthenticationRequest(type: AuthenticationResponse.Type): AuthenticationRequest {
@@ -112,6 +131,7 @@ class SpotifyLoginActivity : AppCompatActivity() {
 
 
     private fun openDetailsActivity() {
+        saveUserProfile()
         val myIntent = Intent(this@SpotifyLoginActivity, DetailsActivity::class.java)
         myIntent.putExtra("spotify_id", id)
         myIntent.putExtra("spotify_display_name", displayName)
@@ -119,6 +139,26 @@ class SpotifyLoginActivity : AppCompatActivity() {
         myIntent.putExtra("spotify_avatar", avatar)
         myIntent.putExtra("spotify_access_token", accessToken)
         startActivity(myIntent)
+    }
+
+    fun saveUserProfile(){
+        viewModel.spotifyProfile.value = SpotifyProfile(id, displayName, email, avatar, accessToken)
+        viewModel.save {
+            if (it!!.success) {
+
+                Toast.makeText(
+                    this@SpotifyLoginActivity,
+                    "Dadsos atualizados.",
+                    Toast.LENGTH_SHORT
+                ).show();
+            } else {
+                Toast.makeText(
+                    this@SpotifyLoginActivity,
+                    it.userMessage,
+                    Toast.LENGTH_LONG
+                ).show();
+            }
+        }
     }
 }
 

@@ -63,7 +63,11 @@ class LoginFragment : Fragment() {
                     "Login efetuado com sucesso.",
                     Toast.LENGTH_SHORT
                 ).show();
-                startActivity(Intent(requireActivity(), SpotifyLoginActivity::class.java))
+
+                val intent_spotify_login = Intent("SPOTMUSICK_LOGIN")
+                intent_spotify_login.addCategory("SPOTMUSICK_LOGIN_CATEGORY")
+                startActivity(intent_spotify_login)
+//                startActivity(Intent(requireActivity(), SpotifyLoginActivity::class.java))
             } else {
                 Toast.makeText(
                     requireActivity().applicationContext,
