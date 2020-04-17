@@ -1,7 +1,7 @@
 package br.com.devteam.spotmusick.repository
 
 import com.google.firebase.auth.FirebaseAuth
-import br.com.devteam.spotmusick.domain.Response
+import br.com.devteam.spotmusick.domain.ApiResponse
 
 class AuthRepository() {
 
@@ -24,13 +24,13 @@ class AuthRepository() {
         auth = FirebaseAuth.getInstance()
     }
 
-    fun login(email: String, password: String, callback: (response: Response?) -> Unit) {
+    fun login(email: String, password: String, callback: (apiResponse: ApiResponse?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
 
-            callback(Response())
+            callback(ApiResponse())
         }.addOnFailureListener {
             callback(
-                Response(
+                ApiResponse(
                     false,
                     userMessage = "Usuário ou senha incorretos."
                 )
@@ -38,14 +38,14 @@ class AuthRepository() {
         }
     }
 
-    fun createUser(email: String, password: String, callback: (response: Response?) -> Unit) {
+    fun createUser(email: String, password: String, callback: (apiResponse: ApiResponse?) -> Unit) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                callback(Response())
+                callback(ApiResponse())
             }
             .addOnFailureListener {
                 callback(
-                    Response(
+                    ApiResponse(
                         false,
                         userMessage = "Usuário ou senha incorretos."
                     )
@@ -53,12 +53,12 @@ class AuthRepository() {
             }
     }
 
-    fun sendPasswordResetEmail(email: String, callback: (response: Response?) -> Unit) {
+    fun sendPasswordResetEmail(email: String, callback: (apiResponse: ApiResponse?) -> Unit) {
         auth.sendPasswordResetEmail(email).addOnCompleteListener {
-            callback(Response())
+            callback(ApiResponse())
         }.addOnFailureListener {
             callback(
-                Response(
+                ApiResponse(
                     false,
                     userMessage = "Erro ao enviar o email."
                 )

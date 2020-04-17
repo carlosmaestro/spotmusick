@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class MovieDTO(
     val id: Int? = null,
 
-    @SerializedName("poster_path")
+        @SerializedName("poster_path")
     val poster: String? = null,
 
     val title: String? = null,
