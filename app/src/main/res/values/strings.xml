@@ -12,4 +12,7 @@
     <!--  Firebase  -->
     <string name="user_config_firebase_path">app_config</string>
 
+
+    <string name="menu_item_search_bar_hint">Digite aqui...</string>
+
 </resources>

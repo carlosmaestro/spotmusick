@@ -2,6 +2,9 @@ package br.com.devteam.spotmusick.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.widget.EditText
+import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +37,36 @@ class SearchActivity : AppCompatActivity() {
             rvTracks.adapter = adapter
         })
 
-        viewModel.discovery("metallica")
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.searchbar,menu)
+        val searchItem =  menu.findItem(R.id.app_bar_search)
+        if(searchItem != null){
+            val searchView = searchItem.actionView as SearchView
+//            val editext = searchView.findViewById<EditText>(android.widget.SearchView.NO_ID)
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if(query != null){
+                        viewModel.discovery(query)
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+//                    if(newText!!.isNotEmpty()){
+//                        val search = newText.toLowerCase()
+//
+//                    }else{
+//                    }
+                    return true
+                }
+
+            })
+        }
+
+        return super.onCreateOptionsMenu(menu)
     }
 }
