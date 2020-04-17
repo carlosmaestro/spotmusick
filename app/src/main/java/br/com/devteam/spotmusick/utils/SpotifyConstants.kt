@@ -1,4 +1,4 @@
-package br.com.devteam.spotmusick.view.activity
+package br.com.devteam.spotmusick.utils
 
 object SpotifyConstants {
 

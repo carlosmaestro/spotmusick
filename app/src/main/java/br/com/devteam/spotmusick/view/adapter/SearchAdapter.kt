@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.devteam.spotmusick.R
 import br.com.devteam.spotmusick.domain.Track
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.track_card_list_item.view.*
 import kotlinx.android.synthetic.main.track_card_list_item.view.ivPoster
 import kotlinx.android.synthetic.main.track_card_list_item.view.tvTitle
 import kotlinx.android.synthetic.main.track_list_lateral_item.view.*
@@ -62,9 +61,6 @@ class SearchAdapter(private val dataSet: List<Track>) :
             holder.overview.text = track.type
         }
 
-        // Carrega a imagem de forma ASSÍNCRONA usando a biblioteca Picasso.
-        // Essa biblioteca cria uma thread em background e retorna uma imagem
-        // através de uma requisição HTTP.
         if (track.album.images?.get(0)?.url != null) {
             Picasso.get().load(track.album.images!![0].url).into(holder.poster);
         }

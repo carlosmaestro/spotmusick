@@ -12,8 +12,12 @@ import androidx.navigation.fragment.findNavController
 
 import br.com.devteam.spotmusick.R
 import br.com.devteam.spotmusick.databinding.LoginFragmentBinding
-import br.com.devteam.spotmusick.view.activity.SpotifyLoginActivity
+import br.com.devteam.spotmusick.utils.SpotifyConstants
 import br.com.devteam.spotmusick.viewmodel.AuthViewModel
+import br.com.devteam.spotmusick.viewmodel.UserProfileViewModel
+import com.spotify.sdk.android.authentication.AuthenticationClient
+import com.spotify.sdk.android.authentication.AuthenticationRequest
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 
 
 class LoginFragment : Fragment() {
@@ -28,29 +32,24 @@ class LoginFragment : Fragment() {
         ViewModelProvider(this).get(AuthViewModel::class.java)
     }
 
+    private val userProfileViewModel: UserProfileViewModel by lazy {
+        ViewModelProvider(this).get(UserProfileViewModel::class.java)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        val view = inflater.inflate(R.layout.login_fragment, container, false)
         binding = LoginFragmentBinding.inflate(inflater, container, false)
         binding.fragment = this@LoginFragment
         binding.userCredentials = viewModel
         binding.lifecycleOwner = this
-
-
-//        val bt_entrar = view.findViewById<Button>(R.id.bt_entrar)
-//        bt_entrar.setOnClickListener(){
-//            findNavController().navigate(R.id.action_loginFragment_to_redefinePasswordFragment)
-//        }
 
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProviders.of(this).get(AuthViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
     fun login(view: View) {
@@ -64,10 +63,12 @@ class LoginFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show();
 
-                val intent_spotify_login = Intent("SPOTMUSICK_LOGIN")
-                intent_spotify_login.addCategory("SPOTMUSICK_LOGIN_CATEGORY")
-                startActivity(intent_spotify_login)
-//                startActivity(Intent(requireActivity(), SpotifyLoginActivity::class.java))
+                val request = getAuthenticationRequest(AuthenticationResponse.Type.TOKEN)
+                AuthenticationClient.openLoginActivity(
+                    requireActivity(),
+                    SpotifyConstants.AUTH_TOKEN_REQUEST_CODE,
+                    request
+                )
             } else {
                 Toast.makeText(
                     requireActivity().applicationContext,
@@ -84,6 +85,47 @@ class LoginFragment : Fragment() {
 
     fun navToRegisterFragment(view: View) {
         findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+    }
+
+
+    private fun getAuthenticationRequest(type: AuthenticationResponse.Type): AuthenticationRequest {
+        return AuthenticationRequest.Builder(
+            SpotifyConstants.CLIENT_ID,
+            type,
+            SpotifyConstants.REDIRECT_URI
+        )
+            .setShowDialog(false)
+            .setScopes(arrayOf("user-read-email"))
+            .build()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (SpotifyConstants.AUTH_TOKEN_REQUEST_CODE == requestCode) {
+            val response = AuthenticationClient.getResponse(resultCode, data)
+            val accessToken: String? = response.accessToken
+//            fetchSpotifyUserProfile(accessToken)
+            if (accessToken != null) {
+                userProfileViewModel.cacheUserProfile(accessToken) {
+                    if (it!!.success) {
+                        Toast.makeText(
+                            this.context,
+                            "Dadsos atualizados.",
+                            Toast.LENGTH_SHORT
+                        ).show();
+                        val intent_spotify_login = Intent("SPOTMUSICK_SEARCH")
+                        intent_spotify_login.addCategory("SPOTMUSICK_SEARCH_TRACKS")
+                        startActivity(intent_spotify_login)
+                    } else {
+                        Toast.makeText(
+                            requireActivity().applicationContext,
+                            it.userMessage,
+                            Toast.LENGTH_LONG
+                        ).show();
+                    }
+                }
+            }
+        }
     }
 
 }

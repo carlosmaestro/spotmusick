@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import br.com.devteam.spotmusick.domain.ApiResponse
-import br.com.devteam.spotmusick.domain.SpotifyProfile
 import br.com.devteam.spotmusick.domain.UserProfile
 import br.com.devteam.spotmusick.interactor.UserProfileInteractor
 

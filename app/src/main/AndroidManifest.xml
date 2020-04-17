@@ -19,32 +19,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.SpotifyLoginActivity">
-            <intent-filter>
-                <action android:name="SPOTMUSICK_LOGIN" />
 
-                <category android:name="SPOTMUSICK_LOGIN_CATEGORY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity> <!-- <activity android:name=".view.activity.MainActivity"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- &lt;!&ndash; <category android:name="android.intent.category.LAUNCHER" /> &ndash;&gt; -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
         <activity android:name=".view.activity.HostActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- <activity android:name=".view.activity.LoginActivity"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
-        <activity android:name=".view.activity.DetailsActivity" />
+        </activity>
     </application>
 
 </manifest>
