@@ -1,5 +1,7 @@
 package br.com.devteam.spotmusick.domain
 
+import java.io.Serializable
+
 
 data class Album(
 
@@ -17,5 +19,5 @@ data class Album(
     var name: String? = null,
     var type: String? = null,
     var uri: String? = null
-)
+) : Serializable
 

@@ -46,7 +46,7 @@ class RegisterFragment : Fragment() {
 
     fun onSubmitForm(view: View) {
 
-        viewModel.login {
+        viewModel.createUser {
             if (it!!.success) {
                 println("email: ${viewModel.email.value}, password: ${viewModel.password.value}")
 

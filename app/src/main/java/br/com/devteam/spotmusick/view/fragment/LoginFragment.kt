@@ -113,9 +113,9 @@ class LoginFragment : Fragment() {
                             "Dadsos atualizados.",
                             Toast.LENGTH_SHORT
                         ).show();
-                        val intent_spotify_login = Intent("SPOTMUSICK_SEARCH")
-                        intent_spotify_login.addCategory("SPOTMUSICK_SEARCH_TRACKS")
-                        startActivity(intent_spotify_login)
+                        val intent_spotify_search = Intent("SPOTMUSICK_SEARCH")
+                        intent_spotify_search.addCategory("SPOTMUSICK_SEARCH_TRACKS")
+                        startActivity(intent_spotify_search)
                     } else {
                         Toast.makeText(
                             requireActivity().applicationContext,

@@ -1,9 +1,9 @@
 package br.com.devteam.spotmusick.view.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.widget.EditText
 import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -33,7 +33,12 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showTracks() {
         viewModel.result.observe(this, Observer { tracks ->
-            val adapter = SearchAdapter(tracks)
+            val adapter = SearchAdapter(tracks) {
+                val intentSpotifyTrack = Intent("SPOTMUSICK_TRACK")
+                intentSpotifyTrack.addCategory("SPOTMUSICK_TRACK_DETAIL")
+                intentSpotifyTrack.putExtra("track", it)
+                startActivity(intentSpotifyTrack)
+            }
             rvTracks.adapter = adapter
         })
 
@@ -41,15 +46,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.searchbar,menu)
-        val searchItem =  menu.findItem(R.id.app_bar_search)
-        if(searchItem != null){
+        menuInflater.inflate(R.menu.searchbar, menu)
+        val searchItem = menu.findItem(R.id.app_bar_search)
+        if (searchItem != null) {
             val searchView = searchItem.actionView as SearchView
 //            val editext = searchView.findViewById<EditText>(android.widget.SearchView.NO_ID)
 
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    if(query != null){
+                    if (query != null) {
                         viewModel.discovery(query)
                     }
                     return true

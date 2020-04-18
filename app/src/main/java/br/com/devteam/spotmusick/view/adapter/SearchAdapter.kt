@@ -1,10 +1,13 @@
 package br.com.devteam.spotmusick.view.adapter
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import br.com.devteam.spotmusick.R
 import br.com.devteam.spotmusick.domain.Track
@@ -13,7 +16,7 @@ import kotlinx.android.synthetic.main.track_card_list_item.view.ivPoster
 import kotlinx.android.synthetic.main.track_card_list_item.view.tvTitle
 import kotlinx.android.synthetic.main.track_list_lateral_item.view.*
 
-class SearchAdapter(private val dataSet: List<Track>) :
+class SearchAdapter(private val dataSet: List<Track>, private val onClickItemCallback: (track: Track) -> Unit) :
 
     RecyclerView.Adapter<SearchAdapter.TrackViewHolderCard>() {
 
@@ -56,9 +59,13 @@ class SearchAdapter(private val dataSet: List<Track>) :
         val track = dataSet[position]
 
         holder.title.text = track.name
+        holder.itemView.setOnClickListener{
+            Log.println(Log.INFO, "CLICK", track?.id + "")
+            onClickItemCallback(track)
+        }
 
         if (holder is TrackViewHolder) {
-            holder.overview.text = track.type
+            holder.subtitle.text = track.artists[0].name + " - " + track.album.name
         }
 
         if (track.album.images?.get(0)?.url != null) {
@@ -72,7 +79,7 @@ class SearchAdapter(private val dataSet: List<Track>) :
     }
 
     class TrackViewHolder(itemView: View) : TrackViewHolderCard(itemView) {
-        val overview: TextView = itemView.tvOverview
+        val subtitle: TextView = itemView.tvSubtitle
     }
 
 }
