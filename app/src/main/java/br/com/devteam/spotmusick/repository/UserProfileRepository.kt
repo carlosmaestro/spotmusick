@@ -4,6 +4,8 @@ import android.content.Context
 import br.com.devteam.spotmusick.domain.ApiResponse
 import br.com.devteam.spotmusick.domain.UserProfile
 import br.com.devteam.spotmusick.repository.dto.UserProfileDTO
+import br.com.devteam.spotmusick.repository.room.RoomDatabase
+import br.com.devteam.spotmusick.repository.room.entity.UserProfileBasic
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import retrofit2.Call
@@ -27,14 +29,24 @@ class UserProfileRepository(context: Context, baseUrl: String) : BaseRetrofit(co
     private val database = FirebaseDatabase.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
+//    private val appDb = RoomDatabase(context).getRoomDatabaseRef()
+
     private fun getUserDbRef(): DatabaseReference {
         val uid = auth.currentUser!!.uid
         return database.getReference("user_profile/$uid")
     }
 
-    fun save(spotifyProfile: UserProfile, callback: (apiResponse: ApiResponse?) -> Unit) {
+    fun save(userProfile: UserProfile, callback: (apiResponse: ApiResponse?) -> Unit) {
+//        val user = appDb.romDao().insertUser(
+//            UserProfileBasic(
+//                id = userProfile.id!!,
+//                email = userProfile.email,
+//                token = userProfile.token,
+//                displayName = userProfile.displayName
+//            )
+//        )
         val ref = getUserDbRef()
-        ref.setValue(spotifyProfile).addOnSuccessListener {
+        ref.setValue(userProfile).addOnSuccessListener {
             callback(ApiResponse())
         }.addOnFailureListener {
             callback(
@@ -61,6 +73,7 @@ class UserProfileRepository(context: Context, baseUrl: String) : BaseRetrofit(co
 
     fun getUserProfile(callback: (userProfile: UserProfile?) -> Unit) {
         val ref = getUserDbRef()
+
         ref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 callback(null)
@@ -76,6 +89,21 @@ class UserProfileRepository(context: Context, baseUrl: String) : BaseRetrofit(co
 
             }
         })
+//        val user = appDb.romDao().loadUser(id = auth.currentUser!!.uid)
+//        if (user != null) {
+//            callback(
+//                UserProfile(
+//                    id = user.id,
+//                    displayName = user.displayName,
+//                    token = user.token,
+//                    email = user.email
+//                )
+//            )
+//            return
+//        } else {
+
+
+//        }
     }
 
 

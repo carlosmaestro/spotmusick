@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,10 @@ class SearchActivity : AppCompatActivity() {
 
         configureRecyclerView()
         showTracks()
+
+        fab_maps.setOnClickListener {
+            navToMapsPage()
+        }
     }
 
     private fun configureRecyclerView() {
@@ -41,8 +46,11 @@ class SearchActivity : AppCompatActivity() {
             }
             rvTracks.adapter = adapter
         })
+    }
 
-
+    private fun navToMapsPage(){
+        val intent = Intent(this, ConfigLocationActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
